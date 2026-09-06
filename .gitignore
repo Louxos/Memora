@@ -1,0 +1,40 @@
+# Secrets — JAMAIS sur GitHub
+.env
+api_key.bin
+
+# Données personnelles (base, fiches, exports, logs)
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+memora.db
+data/
+logs/
+exports/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+build/
+dist/
+*.spec
+
+# Outils / éditeurs
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+.DS_Store
+
+# Documents de test éventuellement déposés localement
+*.pdf
+!tests/exemples/*.pdf
+*.docx
+!tests/exemples/*.docx
