@@ -51,7 +51,12 @@ def main() -> int:
     app.processEvents()
 
     def capture(nom: str) -> None:
-        app.processEvents()
+        import time
+
+        # laisse les animations d'apparition se terminer (180 ms)
+        for _ in range(15):
+            app.processEvents()
+            time.sleep(0.02)
         ok = fenetre.grab().save(str(dossier / f"{nom}.png"))
         print(("✓" if ok else "✗"), nom)
 

@@ -1,4 +1,4 @@
-"""Vue Accueil : salutation, import rapide, statistiques, dernières fiches."""
+"""Vue Accueil : salutation, héros d'importation, statistiques, dernières fiches."""
 
 from __future__ import annotations
 
@@ -33,6 +33,14 @@ MOIS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet",
         "août", "septembre", "octobre", "novembre", "décembre"]
 
 
+def _barre_titre() -> QFrame:
+    """Petite barre dégradée sous les titres de section."""
+    barre = QFrame()
+    barre.setProperty("classe", "barre_titre")
+    barre.setFixedWidth(64)
+    return barre
+
+
 class HomeView(QWidget):
     importer_demande = Signal()
     ouvrir_fiche = Signal(int)
@@ -44,7 +52,7 @@ class HomeView(QWidget):
         self.contexte = contexte
         colonne = QVBoxLayout(self)
         colonne.setContentsMargins(0, 8, 0, 20)
-        colonne.setSpacing(20)
+        colonne.setSpacing(18)
 
         # --- salutation
         aujourdhui = date.today()
@@ -58,30 +66,61 @@ class HomeView(QWidget):
         )
         colonne.addWidget(salutation)
         colonne.addWidget(question)
+        colonne.addWidget(_barre_titre())
         colonne.addWidget(date_lab)
 
-        # --- grande carte d'import
+        # --- héros : grande carte dégradée d'import
         p = theme.palette("clair")
-        carte_import = Carte("encadre")
-        corps = QHBoxLayout()
-        corps.setContentsMargins(6, 4, 6, 4)
-        carte_import.layout().addLayout(corps)
-        texte_col = QVBoxLayout()
-        texte_col.setSpacing(4)
-        titre_cta = QLabel("Importer un cours")
-        titre_cta.setStyleSheet(f"color:{p['accent']};font-size:17px;font-weight:800;")
-        sous_cta = etiquette(
-            "PDF, Word, image ou photo — Memora l'analyse et crée une fiche de révision complète.",
-            "muet",
+        hero = QFrame()
+        hero.setStyleSheet(
+            f"QFrame{{border:none;border-radius:18px;"
+            f"background:{theme.degrade(p)};}}"
         )
-        texte_col.addWidget(titre_cta)
-        texte_col.addWidget(sous_cta)
-        corps.addLayout(texte_col, 1)
-        self.bouton_import = bouton("＋ Importer un document", "primaire", "importer", 20, "#FFFFFF")
-        self.bouton_import.setMinimumHeight(46)
+        hero_lay = QHBoxLayout(hero)
+        hero_lay.setContentsMargins(30, 26, 30, 26)
+        hero_lay.setSpacing(20)
+
+        texte_col = QVBoxLayout()
+        texte_col.setSpacing(6)
+        kicker = QLabel("NOUVELLE FICHE")
+        kicker.setStyleSheet(
+            "color:rgba(255,255,255,0.75);font-size:11px;font-weight:800;"
+            "letter-spacing:2px;background:transparent;"
+        )
+        titre_hero = QLabel("Transforme un cours en fiche de révision")
+        titre_hero.setStyleSheet(
+            "color:#FFFFFF;font-size:21px;font-weight:800;background:transparent;"
+        )
+        sous_hero = QLabel(
+            "PDF, Word, image ou photo — Memora l'analyse et crée une fiche claire, "
+            "complète et prête à réviser."
+        )
+        sous_hero.setWordWrap(True)
+        sous_hero.setStyleSheet(
+            "color:rgba(255,255,255,0.85);font-size:13.5px;background:transparent;"
+        )
+        texte_col.addWidget(kicker)
+        texte_col.addWidget(titre_hero)
+        texte_col.addWidget(sous_hero)
+        hero_lay.addLayout(texte_col, 1)
+
+        emoji_hero = QLabel("🚀")
+        emoji_hero.setStyleSheet(
+            "font-size:56px;background:transparent;border:none;"
+        )
+        hero_lay.addWidget(emoji_hero)
+
+        self.bouton_import = QPushButton("＋  Importer un document")
+        self.bouton_import.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.bouton_import.setStyleSheet(
+            "QPushButton{background:#FFFFFF;color:#4F46E5;border:none;"
+            "border-radius:12px;padding:13px 24px;font-size:14.5px;font-weight:800;}"
+            "QPushButton:hover{background:#F0F1FF;}"
+        )
+        self.bouton_import.setMinimumHeight(50)
         self.bouton_import.clicked.connect(self.importer_demande.emit)
-        corps.addWidget(self.bouton_import)
-        colonne.addWidget(carte_import)
+        hero_lay.addWidget(self.bouton_import, 0, Qt.AlignmentFlag.AlignVCenter)
+        colonne.addWidget(hero)
 
         # --- statistiques
         self.grille_stats = QGridLayout()
@@ -89,14 +128,17 @@ class HomeView(QWidget):
         colonne.addLayout(self.grille_stats)
 
         # --- dernières fiches
+        entete_recentes = QHBoxLayout()
         self.titre_recentes = QLabel("Dernières fiches")
         self.titre_recentes.setProperty("classe", "titre2")
-        colonne.addWidget(self.titre_recentes)
+        entete_recentes.addWidget(self.titre_recentes)
+        entete_recentes.addStretch(1)
+        colonne.addLayout(entete_recentes)
         self.zone_recentes = QVBoxLayout()
         self.zone_recentes.setSpacing(8)
         colonne.addLayout(self.zone_recentes)
 
-        self.bouton_voir = bouton("Voir toute la bibliothèque", "lien", "liste")
+        self.bouton_voir = bouton("Voir toute la bibliothèque  →", "lien", "liste")
         self.bouton_voir.clicked.connect(self.voir_bibliotheque.emit)
         colonne.addWidget(self.bouton_voir)
         colonne.addStretch(1)

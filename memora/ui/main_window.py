@@ -96,13 +96,30 @@ class FenetrePrincipale(QMainWindow):
         self.barre_laterale = QFrame()
         barre = self.barre_laterale
         barre.setObjectName("barreLaterale")
-        barre.setFixedWidth(224)
+        barre.setFixedWidth(228)
         colonne = QVBoxLayout(barre)
         colonne.setContentsMargins(16, 20, 16, 16)
         colonne.setSpacing(4)
 
-        self.logo = QLabel("🧠  Memora")
-        colonne.addWidget(self.logo)
+        # --- logo : pastille dégradée + nom
+        ligne_logo = QHBoxLayout()
+        ligne_logo.setSpacing(10)
+        self.logo_pastille = QFrame()
+        self.logo_pastille.setFixedSize(40, 40)
+        logo_lay = QVBoxLayout(self.logo_pastille)
+        logo_lay.setContentsMargins(0, 0, 0, 0)
+        logo_emoji = QLabel("🧠")
+        logo_emoji.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        logo_emoji.setStyleSheet("font-size:19px;background:transparent;border:none;")
+        logo_lay.addWidget(logo_emoji)
+        self.logo = QLabel("Memora")
+        self.logo.setStyleSheet(
+            "font-size:20px;font-weight:800;letter-spacing:0.5px;padding:6px 0;"
+        )
+        ligne_logo.addWidget(self.logo_pastille)
+        ligne_logo.addWidget(self.logo)
+        ligne_logo.addStretch(1)
+        colonne.addLayout(ligne_logo)
 
         self._groupe_nav = QButtonGroup(self)
         self._groupe_nav.setExclusive(True)
@@ -145,9 +162,13 @@ class FenetrePrincipale(QMainWindow):
             f"QFrame#barreLaterale{{background:{p['barre']};"
             f"border-right:1px solid {p['bord']};}}"
         )
+        self.logo_pastille.setStyleSheet(
+            f"QFrame{{border:none;border-radius:13px;"
+            f"background:{theme.degrade(p)};}}"
+        )
         self.logo.setStyleSheet(
-            f"color:{p['accent']};font-size:21px;font-weight:800;"
-            "padding:2px 8px 18px 8px;"
+            f"color:{p['texte']};font-size:20px;font-weight:800;"
+            "letter-spacing:0.5px;padding:6px 0;"
         )
         self.version.setStyleSheet(f"color:{p['texte3']};font-size:11px;padding:6px;")
         for b in self._boutons_nav.values():
@@ -193,7 +214,9 @@ class FenetrePrincipale(QMainWindow):
 
     # ------------------------------------------------------------------ thème
     def _palette(self) -> dict:
-        return theme.palette(self.contexte.reglages.theme if self.contexte.reglages.theme != "systeme" else "clair")
+        if self.contexte.reglages.theme == "systeme":
+            return theme.palette(getattr(self.contexte, "theme_actuel", "clair"))
+        return theme.palette(self.contexte.reglages.theme)
 
     def appliquer_theme(self) -> None:
         from PySide6.QtWidgets import QApplication
@@ -201,7 +224,13 @@ class FenetrePrincipale(QMainWindow):
         app = QApplication.instance()
         nom = theme.appliquer_theme(app, self.contexte.reglages.theme)
         self.contexte.theme_actuel = nom
+        self.setWindowIcon(icons.icone("etincelle", self._palette()["accent"], 32))
         self._styliser_barre()
+        # re-rend les vues avec la nouvelle palette (cartes colorées, listes…)
+        if hasattr(self, "vue_accueil"):
+            self._sur_bibliotheque_changee()
+            if self.pile.currentIndex() == PAGE_FICHE and self.vue_fiche.fiche:
+                self.vue_fiche.charge(self.vue_fiche.fiche.id)
 
     def appliquer_theme_par_nom(self, nom: str) -> None:
         self.contexte.reglages.theme = nom

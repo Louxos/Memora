@@ -35,18 +35,23 @@ _log = logger("ui.fiche")
 
 
 class SectionCarte(QFrame):
-    """Carte d'une section de fiche."""
+    """Carte d'une section de fiche, avec barre latérale colorée."""
 
-    def __init__(self, cle: str, titre: str, emoji: str, parent=None):
+    def __init__(self, cle: str, titre: str, emoji: str, accent: str, p: dict, parent=None):
         super().__init__(parent)
         self.cle = cle
         self.setProperty("classe", "carte")
+        self.setStyleSheet(
+            f"QFrame{{background:{p['surface']};border:1px solid {p['bord']};"
+            f"border-left:4px solid {accent};border-radius:16px;}}"
+            f"QFrame:hover{{background:{p['surface']};}}"
+        )
         disposition = QVBoxLayout(self)
-        disposition.setContentsMargins(20, 16, 20, 18)
+        disposition.setContentsMargins(22, 16, 22, 18)
         disposition.setSpacing(10)
         entete = QHBoxLayout()
         titre_lab = QLabel(f"{emoji}  {titre}")
-        titre_lab.setStyleSheet("font-size:16px;font-weight:800;")
+        titre_lab.setStyleSheet(f"font-size:16px;font-weight:800;color:{accent};")
         entete.addWidget(titre_lab)
         entete.addStretch(1)
         disposition.addLayout(entete)
@@ -85,6 +90,10 @@ class FicheView(QWidget):
         self.titre.setProperty("classe", "titre1")
         self.titre.setWordWrap(True)
         colonne_titre.addWidget(self.titre)
+        barre_titre = QFrame()
+        barre_titre.setProperty("classe", "barre_titre")
+        barre_titre.setFixedWidth(84)
+        colonne_titre.addWidget(barre_titre)
         self.badges = QHBoxLayout()
         self.badges.setSpacing(8)
         colonne_titre.addLayout(self.badges)
@@ -187,11 +196,12 @@ class FicheView(QWidget):
         self._vider_contenu()
         fiche = self.fiche
         c = fiche.contenu
-        p = theme.palette("clair")
+        p = theme.palette(getattr(self.contexte, "theme_actuel", "clair"))
         self._affiche_reponses = False
 
         for cle, titre, emoji in fiche.sections():
-            carte = SectionCarte(cle, titre, emoji)
+            accent = sections_rendu.SECTION_ACCENTS.get(cle, p["accent"])
+            carte = SectionCarte(cle, titre, emoji, accent, p)
             sections_rendu.rendre_section(carte.corps, cle, c, p)
             self.colonne_contenu.addWidget(carte)
 

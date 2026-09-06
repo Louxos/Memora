@@ -23,6 +23,22 @@ from memora.ui.widgets import Pastille, bouton, etiquette
 
 ICONES_DPE = {"date": "📅", "personne": "👤", "événement": "⚡"}
 
+# Couleur d'accent de chaque section (barre latérale de la carte)
+SECTION_ACCENTS = {
+    "objectif": "#6366F1",
+    "essentiel": "#8B5CF6",
+    "notions": "#3B82F6",
+    "definitions": "#22C55E",
+    "formules": "#F97316",
+    "methodes": "#EC4899",
+    "dates_personnages": "#EAB308",
+    "exemples": "#14B8A6",
+    "pieges": "#EF4444",
+    "retenir": "#F43F5E",
+    "questions": "#64748B",
+    "avertissements": "#D97706",
+}
+
 
 # ------------------------------------------------------------------ helpers
 

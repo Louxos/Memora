@@ -80,24 +80,35 @@ class Pastille(QLabel):
 
 
 class CarteStat(QFrame):
-    """Carte de statistique de l'accueil (icône + valeur + libellé)."""
+    """Carte de statistique de l'accueil : icône en pastille colorée + valeur."""
 
     def __init__(self, nom_icone: str, valeur: str, libelle: str, couleur: str, parent=None):
         super().__init__(parent)
         self.setProperty("classe", "carte")
-        self.setFixedHeight(92)
+        self.setFixedHeight(96)
         lay = QHBoxLayout(self)
-        lay.setContentsMargins(18, 14, 18, 14)
+        lay.setContentsMargins(16, 14, 16, 14)
+        lay.setSpacing(14)
+
+        pastille_icone = QFrame()
+        pastille_icone.setFixedSize(48, 48)
+        pastille_icone.setStyleSheet(
+            f"QFrame{{background:{couleur}1A;border-radius:15px;border: none;}}"  # teinte 10 %
+        )
+        sous_lay = QVBoxLayout(pastille_icone)
+        sous_lay.setContentsMargins(0, 0, 0, 0)
         icone_lab = QLabel()
-        icone_lab.setPixmap(icons.icone(nom_icone, couleur, 26).pixmap(26, 26))
+        icone_lab.setPixmap(icons.icone(nom_icone, couleur, 24).pixmap(24, 24))
+        icone_lab.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        sous_lay.addWidget(icone_lab)
+        lay.addWidget(pastille_icone)
+
         colonne = QVBoxLayout()
         colonne.setSpacing(0)
         self.valeur = etiquette(valeur, "titre2")
         self.libelle = etiquette(libelle, "tres_muet")
         colonne.addWidget(self.valeur)
         colonne.addWidget(self.libelle)
-        lay.addWidget(icone_lab)
-        lay.addSpacing(12)
         lay.addLayout(colonne)
         lay.addStretch(1)
 
@@ -114,14 +125,25 @@ class EtatVide(QWidget):
         lay.setContentsMargins(40, 46, 40, 46)
         lay.setSpacing(10)
         p = theme.palette("clair")
+        halo = QFrame()
+        halo.setFixedSize(88, 88)
+        halo.setStyleSheet(
+            f"QFrame{{background:{p['accent']}14;border-radius:28px;border:none;}}"
+        )
+        halo_lay = QVBoxLayout(halo)
+        halo_lay.setContentsMargins(0, 0, 0, 0)
         icone_lab = QLabel()
-        icone_lab.setPixmap(icons.icone(nom_icone, p["texte3"], 52).pixmap(52, 52))
+        icone_lab.setPixmap(icons.icone(nom_icone, p["texte3"], 40).pixmap(40, 40))
         icone_lab.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        halo_lay.addWidget(icone_lab)
+        conteneur_halo = QHBoxLayout()
+        conteneur_halo.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        conteneur_halo.addWidget(halo)
+        lay.addLayout(conteneur_halo)
         titre_lab = etiquette(titre, "titre3")
         titre_lab.setAlignment(Qt.AlignmentFlag.AlignCenter)
         sous_lab = etiquette(sous_titre, "tres_muet")
         sous_lab.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        lay.addWidget(icone_lab)
         lay.addWidget(titre_lab)
         lay.addWidget(sous_lab)
 
@@ -139,8 +161,11 @@ class LigneFiche(QFrame):
         self.id_fiche = fiche.id
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setProperty("classe", "carte")
+        couleur = couleur_matiere(fiche.matiere)
+        # barre latérale colorée par matière (le fond vient du thème global)
         self.setStyleSheet(
-            "QFrame{border-radius:12px;} QFrame:hover{border-color:" + couleur_matiere(fiche.matiere) + ";}"
+            f"QFrame{{border-left:4px solid {couleur};}}"
+            f"QFrame:hover{{border-left:4px solid {couleur};}}"
         )
         lay = QHBoxLayout(self)
         lay.setContentsMargins(16, 12, 14, 12)
@@ -213,7 +238,7 @@ def afficher_toast(parent: QWidget, message: str, genre: str = "info", duree_ms:
     )
     effet = QGraphicsOpacityEffect(toast)
     toast.setGraphicsEffect(effet)
-    fondu = QPropertyAnimation(effet, b"opacity")
+    fondu = QPropertyAnimation(effet, b"opacity", toast)
     fondu.setDuration(220)
     fondu.setStartValue(0.0)
     fondu.setEndValue(1.0)
@@ -223,7 +248,7 @@ def afficher_toast(parent: QWidget, message: str, genre: str = "info", duree_ms:
     toast.raise_()
 
     def cacher() -> None:
-        sortie = QPropertyAnimation(effet, b"opacity")
+        sortie = QPropertyAnimation(effet, b"opacity", toast)
         sortie.setDuration(260)
         sortie.setStartValue(1.0)
         sortie.setEndValue(0.0)
@@ -234,12 +259,18 @@ def afficher_toast(parent: QWidget, message: str, genre: str = "info", duree_ms:
 
 
 def apparition(widget: QWidget, duree_ms: int = 180) -> None:
-    """Léger fondu d'apparition (retour visuel sans ralentir l'usage)."""
+    """Léger fondu d'apparition (retour visuel sans ralentir l'usage).
+
+    L'effet est détaché à la fin de l'animation : un QGraphicsOpacityEffect
+    resté attaché dégrade le rendu (bordures QSS) et les performances.
+    L'animation est parentée au widget pour ne pas être recyclée avant la fin.
+    """
     effet = QGraphicsOpacityEffect(widget)
     widget.setGraphicsEffect(effet)
-    anim = QPropertyAnimation(effet, b"opacity")
+    anim = QPropertyAnimation(effet, b"opacity", widget)
     anim.setDuration(duree_ms)
     anim.setStartValue(0.0)
     anim.setEndValue(1.0)
     anim.setEasingCurve(QEasingCurve.Type.OutCubic)
+    anim.finished.connect(lambda: widget.setGraphicsEffect(None))
     anim.start(QAbstractAnimation.DeletionPolicy.DeleteWhenStopped)

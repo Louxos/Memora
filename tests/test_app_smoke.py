@@ -44,8 +44,15 @@ def fenetre(qapp, tmp_path, monkeypatch):
 
 def capture(fenetre, nom: str) -> None:
     """Sauvegarde une capture (répertoire de travail du test : tmp)."""
+    import time
     from pathlib import Path
 
+    from PySide6.QtWidgets import QApplication
+
+    # laisse les animations d'apparition se terminer (effet détaché ensuite)
+    for _ in range(15):
+        QApplication.processEvents()
+        time.sleep(0.02)
     dossier = Path("captures")
     dossier.mkdir(exist_ok=True)
     fenetre.grab().save(str(dossier / f"{nom}.png"))
