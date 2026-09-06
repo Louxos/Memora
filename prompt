@@ -1,0 +1,975 @@
+# 🧠 PROJET MEMORA — PROMPT DE DÉVELOPPEMENT COMPLET
+
+Tu dois développer de A à Z une application desktop locale appelée **Memora**.
+
+## 1. CONCEPT
+
+Memora est un logiciel personnel de révision destiné principalement à un élève de 3e préparant le brevet.
+
+Son objectif principal est extrêmement simple :
+
+> **L'utilisateur importe un cours sous forme de PDF, document Word, image ou photo. Memora analyse son contenu avec une IA et génère automatiquement une fiche de révision complète, claire, structurée, visuellement agréable et réellement utile pour apprendre.**
+
+L'application doit ensuite conserver toutes les fiches générées dans une bibliothèque locale organisée par matière, chapitre et autres informations pertinentes.
+
+Je veux une application qui ressemble à un **vrai logiciel terminé et professionnel**, pas à un prototype généré rapidement par une IA.
+
+---
+
+# 2. TECHNOLOGIES
+
+Utilise principalement :
+
+* Python
+* Une interface graphique moderne adaptée à Python
+* SQLite pour la base de données locale
+* API Mistral pour l'intelligence artificielle
+* Git pour la gestion du projet
+* GitHub pour le dépôt et les versions
+
+L'application doit fonctionner localement sur Windows.
+
+Ne pas utiliser Firebase.
+
+Ne pas utiliser B2 Storage.
+
+Ne pas nécessiter de serveur distant pour le fonctionnement normal de l'application.
+
+La bibliothèque doit fonctionner localement.
+
+L'architecture doit toutefois être propre et suffisamment modulaire pour permettre des évolutions futures.
+
+---
+
+# 3. API MISTRAL
+
+L'application doit utiliser l'API Mistral pour analyser les documents et générer les fiches.
+
+IMPORTANT :
+
+La clé API ne doit JAMAIS être écrite directement dans le code source.
+
+Elle doit être configurée localement.
+
+Prévoir dans les paramètres :
+
+* fournisseur IA
+* clé API
+* modèle utilisé
+* bouton « Tester la connexion »
+
+La clé doit être stockée de manière aussi sûre que possible localement.
+
+Créer un fichier `.env.example` ne contenant aucune vraie clé.
+
+Le `.gitignore` doit empêcher l'envoi du fichier `.env` et de toute donnée sensible sur GitHub.
+
+Ne jamais afficher une clé API complète dans l'interface après son enregistrement.
+
+Prévoir une gestion propre des erreurs :
+
+* clé invalide
+* absence de clé
+* problème réseau
+* quota atteint
+* erreur API
+* document trop volumineux
+* réponse IA invalide
+
+Ne jamais faire des tentatives infinies en cas d'erreur.
+
+---
+
+# 4. IMPORTATION DES DOCUMENTS
+
+Créer une fonction centrale très visible :
+
+## « + Importer un document »
+
+L'utilisateur doit pouvoir sélectionner au minimum :
+
+* PDF
+* DOCX
+* TXT
+* JPG
+* JPEG
+* PNG
+* WEBP
+
+Prévoir également le glisser-déposer si possible.
+
+Après sélection, afficher clairement :
+
+* nom du fichier
+* type
+* taille
+* aperçu lorsque possible
+* bouton pour lancer l'analyse
+
+---
+
+# 5. EXTRACTION DU CONTENU
+
+Memora doit être capable de récupérer le contenu du document.
+
+Pour les PDF textuels :
+
+→ extraire directement le texte.
+
+Pour les DOCX :
+
+→ extraire le texte et conserver autant que possible la structure.
+
+Pour les images :
+
+→ utiliser un système OCR.
+
+Pour les PDF scannés :
+
+→ détecter lorsqu'il n'y a pas suffisamment de texte et utiliser l'OCR.
+
+L'OCR doit être capable de fonctionner correctement avec des documents scolaires français.
+
+Le système doit essayer de conserver :
+
+* titres
+* sous-titres
+* paragraphes
+* listes
+* tableaux lorsque possible
+* formules lorsque possible
+
+Ne jamais considérer automatiquement qu'un document mal lu est correct.
+
+Si certaines informations sont illisibles ou incertaines, les signaler.
+
+---
+
+# 6. PROCESSUS D'ANALYSE
+
+Après importation, afficher une progression claire.
+
+Exemple :
+
+1. 📄 Lecture du document
+2. 🔍 Extraction du contenu
+3. 👁️ Analyse des images / OCR si nécessaire
+4. 🧠 Analyse du cours
+5. 📝 Construction de la fiche
+6. 🎨 Mise en forme
+7. 💾 Sauvegarde
+8. ✅ Fiche terminée
+
+L'utilisateur doit comprendre ce que fait Memora.
+
+Éviter les écrans de chargement vides.
+
+---
+
+# 7. INTELLIGENCE ARTIFICIELLE
+
+L'IA doit avoir pour objectif de produire une fiche de révision et non simplement un résumé.
+
+Elle doit :
+
+* comprendre le document
+* identifier les notions principales
+* distinguer l'essentiel du secondaire
+* reformuler clairement
+* simplifier lorsque cela améliore la compréhension
+* conserver les informations importantes
+* détecter les définitions
+* détecter les formules
+* détecter les dates
+* détecter les personnages/personnes importantes
+* détecter les événements
+* détecter les méthodes
+* détecter les exemples utiles
+* détecter les erreurs ou incohérences éventuelles du document
+
+IMPORTANT :
+
+L'IA ne doit pas inventer des informations présentées comme provenant du cours.
+
+Elle peut reformuler et organiser les informations.
+
+Si une information est ambiguë, absente ou illisible :
+
+→ le signaler clairement plutôt que l'inventer.
+
+---
+
+# 8. ADAPTATION AU NIVEAU SCOLAIRE
+
+Memora doit principalement être pensé pour un élève de 3e.
+
+L'IA doit donc produire des explications :
+
+* accessibles
+* précises
+* adaptées au niveau collège
+* sans vocabulaire inutilement compliqué
+* mais sans simplifier au point de devenir faux
+
+La fiche doit être utile pour :
+
+* apprendre le chapitre
+* réviser avant un contrôle
+* préparer le brevet
+* revoir rapidement les notions importantes
+
+---
+
+# 9. STRUCTURE STANDARD DES FICHES
+
+Toutes les fiches doivent avoir une structure cohérente.
+
+Cependant, les sections doivent être **adaptatives**.
+
+Ne pas afficher une section vide simplement parce qu'elle existe dans le modèle.
+
+Structure générale :
+
+## 🟦 EN-TÊTE
+
+Afficher :
+
+* titre du chapitre
+* matière
+* niveau
+* éventuellement thème
+* date de création
+
+Exemple :
+
+**La Première Guerre mondiale**
+
+`Histoire • 3e`
+
+---
+
+## 🎯 OBJECTIF
+
+Une courte section :
+
+> À la fin de cette fiche, tu dois être capable de...
+
+L'objectif doit être généré à partir du contenu réel.
+
+---
+
+## 🧠 L'ESSENTIEL
+
+La partie la plus importante.
+
+Présenter les grandes idées du chapitre sous forme de blocs courts.
+
+Éviter les longs paragraphes.
+
+---
+
+## 📚 NOTIONS IMPORTANTES
+
+Présenter les notions principales sous forme de cartes/blocs.
+
+Chaque notion doit contenir :
+
+* nom
+* explication claire
+* éventuellement un exemple
+
+---
+
+## 📌 DÉFINITIONS
+
+Afficher uniquement les définitions réellement utiles.
+
+Format clair :
+
+**Terme**
+
+Définition.
+
+---
+
+## 🧮 FORMULES / RÈGLES
+
+Cette section n'apparaît que lorsqu'elle est pertinente.
+
+Pour les mathématiques et sciences notamment :
+
+* formule
+* signification des variables
+* unité lorsque pertinente
+* conditions d'utilisation
+* exemple simple si utile
+
+---
+
+## 📝 MÉTHODES
+
+Lorsque le cours contient une méthode :
+
+Présenter les étapes clairement.
+
+Exemple :
+
+**Comment résoudre ce type de problème ?**
+
+1. ...
+2. ...
+3. ...
+4. ...
+
+---
+
+## 📅 DATES / PERSONNES / ÉVÉNEMENTS
+
+Afficher cette section uniquement si elle est pertinente.
+
+Elle doit être adaptée à la matière.
+
+---
+
+## 💡 EXEMPLES
+
+Ajouter des exemples lorsqu'ils permettent réellement de comprendre une notion.
+
+Ne pas en mettre artificiellement.
+
+---
+
+## ⚠️ PIÈGES À ÉVITER
+
+Identifier les confusions et erreurs fréquentes qui peuvent être déduites du cours.
+
+Ne pas inventer de faux pièges.
+
+---
+
+## 🔥 À RETENIR ABSOLUMENT
+
+Terminer la fiche par une synthèse extrêmement importante.
+
+Maximum environ 5 à 10 éléments.
+
+Titre :
+
+**🔥 Si tu ne dois retenir que ça**
+
+---
+
+## ❓ TESTE-TOI
+
+Créer plusieurs questions de révision basées uniquement sur le contenu du document.
+
+Afficher d'abord les questions.
+
+Les réponses doivent être masquées et accessibles via un bouton :
+
+**Afficher les réponses**
+
+Les questions doivent varier :
+
+* définition
+* compréhension
+* application
+* mémorisation
+* raisonnement lorsque pertinent
+
+---
+
+# 10. DESIGN DES FICHES
+
+Les fiches doivent être visuellement très belles.
+
+IMPORTANT :
+
+Ne pas générer une simple page avec du texte noir sur fond blanc.
+
+Utiliser :
+
+* cartes
+* sections bien séparées
+* titres hiérarchisés
+* icônes
+* badges
+* encadrés
+* espaces blancs
+* typographie lisible
+* mise en évidence des informations importantes
+* formules visuellement distinctes
+* citations ou extraits courts lorsqu'ils sont réellement utiles
+
+Le design doit être moderne, premium, propre et professionnel.
+
+Éviter le design « IA générique ».
+
+L'ensemble doit ressembler à un véritable produit logiciel conçu par un designer.
+
+---
+
+# 11. INTERFACE PRINCIPALE
+
+Créer une interface desktop moderne.
+
+Navigation principale :
+
+* 🏠 Accueil
+* 📚 Bibliothèque
+* ➕ Nouvelle fiche
+* ⭐ Favoris
+* ⚙️ Paramètres
+
+Prévoir éventuellement une section « Révisions » si cela apporte une vraie utilité.
+
+---
+
+# 12. ACCUEIL
+
+L'accueil doit donner une vue rapide de l'application.
+
+Afficher par exemple :
+
+**Bonjour 👋**
+
+**Que veux-tu réviser aujourd'hui ?**
+
+Puis un grand bouton :
+
+### + Importer un cours
+
+Et quelques statistiques :
+
+* nombre total de fiches
+* matières
+* fiches récemment créées
+* favoris
+
+Afficher également les dernières fiches.
+
+---
+
+# 13. BIBLIOTHÈQUE
+
+Créer une vraie bibliothèque de fiches.
+
+Chaque fiche doit contenir :
+
+* titre
+* matière
+* chapitre
+* date
+* éventuellement niveau
+* statut de révision
+* favori ou non
+
+Prévoir une recherche.
+
+Prévoir des filtres :
+
+* matière
+* chapitre
+* favoris
+* statut
+
+Permettre de trier :
+
+* récent
+* ancien
+* alphabétique
+
+---
+
+# 14. ORGANISATION
+
+La bibliothèque doit pouvoir être organisée logiquement.
+
+Exemple :
+
+📚 Mathématiques
+
+→ Calcul littéral
+→ Fonctions
+→ Probabilités
+
+📚 Histoire
+
+→ Première Guerre mondiale
+→ Seconde Guerre mondiale
+→ Guerre froide
+
+📚 SVT
+
+→ Génétique
+→ Évolution
+→ Corps humain
+
+La matière et le chapitre doivent pouvoir être corrigés manuellement si l'IA se trompe.
+
+---
+
+# 15. AFFICHAGE D'UNE FICHE
+
+Lorsqu'une fiche est ouverte :
+
+Afficher une vraie page de lecture.
+
+Prévoir :
+
+* titre
+* matière
+* chapitre
+* contenu
+* bouton favori
+* bouton modifier
+* bouton supprimer
+* bouton exporter
+* bouton régénérer si nécessaire
+
+La lecture doit être confortable.
+
+---
+
+# 16. MODIFICATION MANUELLE
+
+L'utilisateur doit pouvoir modifier une fiche générée.
+
+Il doit pouvoir :
+
+* modifier le titre
+* modifier le contenu
+* modifier la matière
+* modifier le chapitre
+* modifier les tags
+* ajouter/supprimer des sections
+* modifier les questions
+* modifier les réponses
+
+Les modifications doivent être sauvegardées automatiquement ou avec un bouton clair.
+
+---
+
+# 17. FAVORIS
+
+Permettre de mettre une fiche en favori.
+
+Afficher les favoris dans une section dédiée.
+
+---
+
+# 18. STATUT DE RÉVISION
+
+Chaque fiche peut avoir un statut :
+
+🔴 À apprendre
+
+🟡 À revoir
+
+🟢 Maîtrisée
+
+L'utilisateur peut changer ce statut manuellement.
+
+---
+
+# 19. EXPORT
+
+Permettre au minimum :
+
+* export PDF
+* copie du contenu
+* éventuellement export Markdown
+
+L'export PDF doit conserver une mise en page propre et lisible.
+
+---
+
+# 20. BASE DE DONNÉES
+
+Utiliser SQLite.
+
+Stocker au minimum :
+
+* identifiant
+* titre
+* matière
+* chapitre
+* niveau
+* contenu de la fiche
+* date de création
+* date de modification
+* statut
+* favori
+* chemin du fichier source si conservé
+* informations utiles au document original
+
+La base doit être créée automatiquement au premier lancement.
+
+Aucune configuration manuelle ne doit être nécessaire.
+
+---
+
+# 21. DOCUMENT ORIGINAL
+
+Lorsque cela est possible, conserver une référence vers le document original.
+
+Permettre éventuellement de revoir le document source associé à une fiche.
+
+Ne pas dupliquer inutilement les gros fichiers.
+
+---
+
+# 22. PARAMÈTRES
+
+Créer une vraie page Paramètres.
+
+Sections :
+
+### 🤖 Intelligence artificielle
+
+* fournisseur
+* clé API
+* modèle
+* tester la connexion
+
+### 📚 Fiches
+
+* longueur par défaut
+* niveau scolaire
+* préférences de génération
+
+### 🎨 Apparence
+
+* thème clair
+* thème sombre
+* éventuellement suivre le système
+
+### 💾 Données
+
+* emplacement des données
+* sauvegarde
+* export/import de la bibliothèque
+
+---
+
+# 23. MODES DE GÉNÉRATION
+
+Prévoir plusieurs modes :
+
+### ⚡ Rapide
+
+Fiche courte avec uniquement l'essentiel.
+
+### 📚 Complète
+
+Fiche détaillée.
+
+### 🎯 Brevet
+
+Priorité aux notions importantes pour le brevet.
+
+### 🧠 Active
+
+Fiche accompagnée de davantage de questions pour se tester.
+
+Le mode choisi doit être visible avant la génération.
+
+---
+
+# 24. DÉTECTION AUTOMATIQUE
+
+L'IA doit essayer de détecter automatiquement :
+
+* matière
+* chapitre
+* niveau
+* titre
+* thème
+
+L'utilisateur doit pouvoir corriger ces informations avant ou après la génération.
+
+---
+
+# 25. GESTION DES ERREURS
+
+L'application doit être robuste.
+
+Afficher des messages compréhensibles pour l'utilisateur.
+
+Exemples :
+
+❌ « Impossible de lire ce fichier. »
+
+❌ « La clé API Mistral est invalide. »
+
+❌ « Le service IA est temporairement indisponible. »
+
+❌ « Ce document est trop volumineux. »
+
+Ne jamais afficher des erreurs techniques incompréhensibles comme seule réponse.
+
+Prévoir également un système de logs local pour faciliter le débogage.
+
+---
+
+# 26. MODE DÉMO / TEST
+
+Créer un mode permettant de tester l'application sans API.
+
+Inclure quelques données de démonstration.
+
+Cela doit permettre de tester :
+
+* accueil
+* bibliothèque
+* recherche
+* fiches
+* favoris
+* statuts
+* modification
+* design
+
+Le mode démo ne doit pas être confondu avec une vraie génération IA.
+
+---
+
+# 27. SÉCURITÉ
+
+Le projet doit être propre.
+
+Créer un `.gitignore` complet.
+
+Ne jamais envoyer :
+
+* clés API
+* mots de passe
+* données personnelles
+* base de données personnelle
+* documents personnels
+* fichiers temporaires
+
+sur GitHub.
+
+Créer :
+
+`.env.example`
+
+avec uniquement des variables fictives.
+
+---
+
+# 28. STRUCTURE DU PROJET
+
+Organiser le code proprement.
+
+Ne pas mettre tout le projet dans un seul fichier gigantesque.
+
+Séparer clairement :
+
+* interface
+* logique métier
+* IA
+* extraction de documents
+* OCR
+* base de données
+* génération des fiches
+* export
+* configuration
+* utilitaires
+
+Le projet doit être facilement maintenable.
+
+---
+
+# 29. INSTALLATION ET LANCEMENT
+
+Créer une procédure extrêmement simple.
+
+Après installation des dépendances, je dois pouvoir lancer Memora facilement.
+
+Prévoir également, si possible, un script de lancement Windows simple.
+
+Exemple :
+
+`run.bat`
+
+ou une méthode équivalente.
+
+Je ne veux pas avoir à effectuer une configuration compliquée à chaque lancement.
+
+---
+
+# 30. DOCUMENTATION
+
+Créer un README.md professionnel expliquant :
+
+* ce qu'est Memora
+* fonctionnalités
+* technologies
+* installation
+* configuration de l'API
+* lancement
+* structure du projet
+* sécurité
+* fonctionnement général
+
+Ne jamais mettre de vraie clé API dans le README.
+
+---
+
+# 31. QUALITÉ DU CODE
+
+Le code doit être :
+
+* propre
+* lisible
+* commenté lorsque nécessaire
+* modulaire
+* robuste
+* maintenable
+
+Éviter les solutions temporaires ou les fonctions inutilisées.
+
+Ne pas créer artificiellement des fonctionnalités juste pour augmenter la taille du projet.
+
+Chaque fonctionnalité doit réellement fonctionner.
+
+---
+
+# 32. DESIGN GLOBAL
+
+Le design de Memora est une priorité.
+
+Je veux quelque chose :
+
+* moderne
+* premium
+* minimaliste
+* fluide
+* professionnel
+* agréable pour un étudiant
+* pas enfantin
+* pas excessivement futuriste
+* pas rempli d'effets inutiles
+
+Prévoir des animations discrètes :
+
+* transitions
+* apparition des cartes
+* états de chargement
+* feedback lors des actions
+
+Les animations ne doivent jamais ralentir l'utilisation.
+
+L'application doit fonctionner correctement sur différentes tailles de fenêtres.
+
+---
+
+# 33. EXPÉRIENCE UTILISATEUR
+
+Le parcours principal doit être extrêmement simple :
+
+```text
+Ouvrir Memora
+      ↓
+Importer un cours
+      ↓
+Choisir le mode de génération
+      ↓
+Analyser
+      ↓
+Générer
+      ↓
+Lire la fiche
+      ↓
+Modifier si nécessaire
+      ↓
+Sauvegarder
+      ↓
+Retrouver la fiche dans la bibliothèque
+```
+
+L'utilisateur ne doit jamais être perdu.
+
+---
+
+# 34. IMPORTANT : PAS DE FAUSSES FONCTIONNALITÉS
+
+Ne crée pas de boutons qui ne font rien.
+
+Ne crée pas de fonctionnalités présentées comme terminées alors qu'elles ne fonctionnent pas.
+
+Si une fonctionnalité est nécessaire au fonctionnement d'une autre, elle doit être réellement implémentée.
+
+---
+
+# 35. TESTS
+
+Après avoir développé l'application, tester réellement les principales fonctionnalités.
+
+Tester au minimum :
+
+* import PDF
+* import DOCX
+* import image
+* OCR
+* génération IA
+* sauvegarde SQLite
+* recherche
+* filtres
+* favoris
+* modification
+* suppression
+* export
+* paramètres
+* erreurs API
+* clé API invalide
+* document vide
+* document illisible
+
+Corriger automatiquement les erreurs évidentes détectées pendant le développement.
+
+---
+
+# 36. LIVRABLE FINAL
+
+Je veux que tu construises **la V1 complète de Memora en une seule passe**.
+
+Ne te contente pas de créer une maquette.
+
+Je veux une application fonctionnelle.
+
+À la fin :
+
+1. Vérifie la structure du projet.
+2. Vérifie les dépendances.
+3. Vérifie que les imports sont corrects.
+4. Vérifie que SQLite fonctionne.
+5. Vérifie que l'application démarre.
+6. Vérifie les principales fonctionnalités.
+7. Corrige les erreurs évidentes.
+8. Fournis les instructions exactes pour lancer Memora.
+9. Indique clairement ce qui nécessite ma clé API Mistral.
+10. Ne mets jamais ma clé API directement dans le code.
+
+---
+
+# 37. PRIORITÉ ABSOLUE
+
+Si tu dois faire des choix pendant le développement, respecte cet ordre :
+
+1. Fonctionnement réel
+2. Qualité des fiches de révision
+3. Fiabilité de l'analyse des documents
+4. Expérience utilisateur
+5. Design
+6. Performance
+7. Fonctionnalités secondaires
+
+Le cœur de Memora est :
+
+> **Importer un cours → comprendre son contenu → produire une excellente fiche de révision → la sauvegarder et la retrouver facilement.**
+
+Construis donc toute l'application autour de cette expérience.
+
+Je veux une V1 réellement utilisable, cohérente, propre et suffisamment aboutie pour que je puisse commencer à l'utiliser pour mes révisions immédiatement après son développement.
