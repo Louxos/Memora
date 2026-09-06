@@ -56,7 +56,8 @@ qu'à l'API Mistral lors des analyses.
 2. Télécharge/copie ce dossier, puis **double-clique sur `install.bat`** (une seule fois).
 3. Double-clique sur **`run.bat`** pour lancer Memora. C'est tout.
 
-> Sur Linux/macOS : `./run.sh` (crée l'environnement et installe tout automatiquement).
+> Sur Linux/macOS : `python3 -m venv .venv && .venv/bin/pip install -r requirements.txt`,
+> puis lance avec `.venv/bin/python main.py`.
 
 ## 🔑 Configuration de la clé API Mistral
 
