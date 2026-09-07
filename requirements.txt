@@ -1,0 +1,19 @@
+# Interface graphique (Qt 6)
+PySide6-Essentials>=6.5
+
+# Extraction de documents
+PyMuPDF>=1.24        # PDF : texte, rendu, densité, aperçus
+python-docx>=1.1     # DOCX : texte + structure (titres, listes, tableaux)
+
+# API Mistral (chat + OCR)
+requests>=2.31
+
+# Stockage sécurisé de la clé API (trousseau système ; optionnel mais recommandé)
+keyring>=24
+
+# --- Optionnel ---
+# pytesseract>=0.3.10  # OCR local de repli : nécessite aussi le binaire Tesseract
+#                       # (https://github.com/UB-Mannheim/tesseract/wiki) + langue « fra »
+
+# Développement / tests
+pytest>=8
