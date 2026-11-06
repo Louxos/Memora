@@ -5,12 +5,10 @@
 # aucune ressource distante). `docs/` est versionné : le mode le plus simple
 # de publication reste « Deploy from a branch → main → /docs ».
 #
-# Ce workflow reconstruit et vérifie le site à chaque modification, puis tente
-# un déploiement via l'API Pages depuis la branche par défaut. L'activation de
-# Pages demande une permission que le token d'automatisation ne possède pas :
-# si Pages n'est pas encore activé, le déploiement échoue en avertissement
-# (sans faire échouer le workflow) et la publication par branche reste
-# disponible dès que Pages est activé dans les paramètres du dépôt.
+# Activer Pages demande une permission que ni le token de l'agent ni le
+# GITHUB_TOKEN du workflow ne possèdent (403 à l'API). Le workflow vérifie
+# donc l'état du site : s'il est activé, il déploie via l'API depuis `main` ;
+# sinon il avertit sans échouer, et la publication par branche reste prête.
 
 name: GitHub Pages — archive Memora
 
@@ -39,6 +37,8 @@ jobs:
   build:
     name: Construire et vérifier le site statique
     runs-on: ubuntu-latest
+    outputs:
+      pages: ${{ steps.pages_check.outputs.enabled }}
     steps:
       - name: Récupérer le dépôt
         uses: actions/checkout@v4
@@ -59,40 +59,26 @@ jobs:
           ! grep -F -q '{{' docs/index.html
           ! grep -F -q '{{' docs/404.html
 
-      # Le site Pages n'existe pas encore à la première exécution : on essaie
-      # de le créer en mode Actions avec le GITHUB_TOKEN du workflow (qui
-      # demande pages:write plus haut). Si le token n'a pas le droit, l'étape
-      # échoue en avertissement et l'activation reste à faire à la main.
-      - name: Activer GitHub Pages (si le token le permet)
-        continue-on-error: true
+      - name: Vérifier si GitHub Pages est activé
+        id: pages_check
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
         run: |
-          code=$(curl -sS -o /tmp/pages-get.json -w '%{http_code}' \
+          code=$(curl -sS -o /dev/null -w '%{http_code}' \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/$REPO/pages")
           echo "GET /pages : $code"
-          if [ "$code" != "200" ]; then
-            post=$(curl -sS -o /tmp/pages-post.json -w '%{http_code}' \
-              -X POST \
-              -H "Authorization: Bearer $GH_TOKEN" \
-              -H "Accept: application/vnd.github+json" \
-              -H "X-GitHub-Api-Version: 2022-11-28" \
-              -H "Content-Type: application/json" \
-              "https://api.github.com/repos/$REPO/pages" \
-              -d '{"build_type":"workflow"}')
-            echo "POST /pages : $post"
-            cat /tmp/pages-post.json
-            case "$post" in
-              200|201|204) echo "::notice::GitHub Pages activé en mode GitHub Actions." ;;
-              *) echo "::warning::Activation de Pages refusée ($post) : à faire dans Settings > Pages > Deploy from a branch > main > /docs." ;;
-            esac
+          if [ "$code" = "200" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::GitHub Pages n'est pas activé. Réglage unique : Settings > Pages > Deploy from a branch > main > /docs (dossier déjà publié). Pour le mode GitHub Actions, activer la source puis relancer ce workflow."
           fi
 
-      - name: Configurer GitHub Pages (si activé)
-        continue-on-error: true
+      - name: Configurer GitHub Pages
+        if: steps.pages_check.outputs.enabled == 'true'
         uses: actions/configure-pages@v5
 
       - name: Déposer l'artefact
@@ -103,8 +89,8 @@ jobs:
   deploy:
     name: Publier via l'API GitHub Pages
     # L'environnement github-pages est protégé : seuls les déploiements depuis
-    # la branche par défaut sont acceptés.
-    if: github.ref == 'refs/heads/main'
+    # la branche par défaut sont acceptés. On n'essaie que si Pages est actif.
+    if: github.ref == 'refs/heads/main' && needs.build.outputs.pages == 'true'
     needs: build
     runs-on: ubuntu-latest
     environment:
@@ -113,10 +99,4 @@ jobs:
     steps:
       - name: Déployer
         id: deployment
-        continue-on-error: true
         uses: actions/deploy-pages@v4
-
-      - name: Avertissement si Pages n'est pas activé
-        if: steps.deployment.outcome == 'failure'
-        run: |
-          echo "::warning::Déploiement API impossible. Activez GitHub Pages dans Settings > Pages : « Deploy from a branch > main > /docs » (le dossier docs/ est déjà publié) ou « GitHub Actions », puis relancez ce workflow."
