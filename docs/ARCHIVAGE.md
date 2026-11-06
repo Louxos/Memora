@@ -62,13 +62,19 @@ logs et exports exclus par `.gitignore`).
 
 1. **Fusionner** la pull request de la branche `arena/7081a176-memora` dans
    `main` : le workflow se déclenche alors et publie la page.
-2. **Activer GitHub Pages** si ce n'est pas déjà fait. Deux possibilités :
-   - **Recommandé, une seule manipulation** :
-     *Settings → Pages → Build and deployment → **Deploy from a branch →
-     `main` → `/docs`***. `docs/` est déjà versionné, aucun outil requis.
-   - **Avec le workflow** : *Source : **GitHub Actions***. Le workflow tente
-     l'activation via `configure-pages` ; si le token du dépôt ne le permet
-     pas, basculer sur la première option.
+2. **Activer GitHub Pages** — c'est la seule étape qui ne peut pas être faite
+   depuis l'agent : l'API Pages répond *« Resource not accessible by
+   integration »* au token fourni (permission `pages:write` absente), et
+   `actions/configure-pages` ne peut activer un site qu'avec un token
+   d'administration dédié. Deux possibilités, une seule manipulation dans les
+   deux cas :
+   - **Recommandé** : *Settings → Pages → Build and deployment →
+     **Deploy from a branch → `main` → `/docs`*** → *Save*. `docs/` est déjà
+     versionné, aucun outil ni compilation requis.
+   - **Avec le workflow** : *Source : **GitHub Actions***, puis relancer
+     *GitHub Pages — archive Memora* depuis l'onglet Actions. Le déploiement
+     `deploy-pages` prend alors le relais. Tant que Pages n'est pas activé, le
+     workflow émet un avertissement et reste vert.
 3. **Vérifier** <https://louxos.github.io/Memora/> et sa page 404
    (par exemple `/Memora/inexistant`).
 4. **Optionnel : verrou officiel** — *Settings → General → Archive this
