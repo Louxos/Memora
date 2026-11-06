@@ -1,0 +1,75 @@
+# Publication de la page d'archive Memora sur GitHub Pages.
+#
+# Les fichiers de `site/` sont des modèles : `scripts/build_site.py` résout
+# leurs marqueurs et produit `docs/`, un site 100 % statique (CSS inline,
+# aucune ressource distante). Le déploiement n'a lieu que depuis la branche
+# par défaut : l'environnement `github-pages` est protégé par GitHub et
+# refuse les déploiements depuis une autre branche.
+
+name: GitHub Pages — archive Memora
+
+on:
+  push:
+    branches:
+      - main
+      - arena/7081a176-memora
+    paths:
+      - "site/**"
+      - "scripts/build_site.py"
+      - "docs/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Construire le site statique
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      - name: Préparer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Générer docs/ depuis les modèles
+        run: python3 scripts/build_site.py
+
+      - name: Vérifier le rendu
+        run: |
+          test -s docs/index.html
+          test -s docs/404.html
+          test -s docs/favicon.svg
+          ! grep -F -q '{{' docs/index.html
+          ! grep -F -q '{{' docs/404.html
+
+      - name: Configurer GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Déposer l'artefact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: docs
+
+  deploy:
+    name: Publier sur GitHub Pages
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Déployer
+        id: deployment
+        uses: actions/deploy-pages@v4

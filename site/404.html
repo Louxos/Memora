@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Page introuvable — Memora</title>
+    <meta name="robots" content="noindex" />
+    <meta
+      name="description"
+      content="Cette adresse ne correspond à aucun fichier du site archivistique Memora. La page d'archive et le dépôt sont juste à côté."
+    />
+    <meta name="theme-color" content="#101219" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="{{BASE_URL}}favicon.svg" type="image/svg+xml" />
+    <style>
+{{INLINE_CSS}}
+    </style>
+  </head>
+  <body class="notfound">
+    <header class="topbar">
+      <div class="wrap">
+        <a class="brand" href="{{BASE_URL}}" aria-label="Memora — page d'archive">
+          {{MARK_SVG}}
+          <span>Memora</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <p class="pill"><span class="dot" aria-hidden="true"></span> Erreur 404</p>
+      <h1>Cette adresse ne mène nulle part.</h1>
+      <p class="lede">
+        Le site Memora est entièrement statique : il n'existe que les fichiers publiés.
+        L'adresse demandée n'en fait pas partie — un lien tronqué, une page d'une ancienne
+        version, ou une faute de frappe.
+      </p>
+
+      <div class="gateway">
+        <h2>Le dépôt est juste à côté</h2>
+        <p class="hint">
+          Memora n'a jamais été une application web : c'était un logiciel Windows qui tournait
+          sur l'ordinateur, avec ses fiches et sa bibliothèque en local. Rien n'est donc hébergé
+          ni exécuté ici — seulement cette page d'archive, le code et la dernière version.
+        </p>
+        <div class="actions">
+          <a class="btn btn-primary" href="{{REPO_URL}}">Voir le code source</a>
+          <a class="btn btn-ghost" href="{{BASE_URL}}">Retour à la page d'archive</a>
+        </div>
+      </div>
+
+      <p class="footnote">
+        Si vous cherchiez une fiche de révision, un export PDF ou une sauvegarde JSON, ils n'ont
+        jamais été publiés sur ce site : ils vivaient dans la base SQLite de l'application, sur
+        l'ordinateur. Aucune donnée personnelle n'a transité par cette page.
+      </p>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <span class="brand">{{MARK_SVG}}<span>Memora</span></span>
+        <span class="closed">Archivé le {{ARCHIVED_ON}}</span>
+        <span class="spacer"></span>
+        <a href="{{REPO_URL}}">Code source</a>
+        <a href="{{REPO_URL}}#readme">Guide</a>
+        <a href="{{REPO_URL}}/blob/main/prompt">Cahier des charges</a>
+      </div>
+    </footer>
+
+    <!-- Memora n'a ni application web, ni routes après « # », ni code d'appairage :
+         aucune redirection automatique n'aurait de sens ici. La page dit la vérité
+         et renvoie simplement vers l'archive et le dépôt. -->
+  </body>
+</html>

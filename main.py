@@ -1,5 +1,8 @@
 """Point d'entrée de l'application Memora.
 
+🗄️ Projet archivé le 6 novembre 2026 — version finale 1.0.0.
+Le code est conservé tel quel, sans maintenance ni correctif.
+
 Utilisation :
     python main.py               → lance l'application
     python main.py --demo        → lance en ajoutant les fiches de démonstration
