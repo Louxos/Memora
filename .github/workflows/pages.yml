@@ -5,11 +5,12 @@
 # aucune ressource distante). `docs/` est versionné : le mode le plus simple
 # de publication reste « Deploy from a branch → main → /docs ».
 #
-# Ce workflow reconstruit et vérifie le site à chaque modification. Il tente
-# aussi un déploiement via l'API Pages depuis la branche par défaut ; si Pages
-# n'est pas activé (ou si le token ne peut pas l'activer), le déploiement est
-# simplement sauté : la construction reste verte et la publication par branche
-# continue de fonctionner.
+# Ce workflow reconstruit et vérifie le site à chaque modification, puis tente
+# un déploiement via l'API Pages depuis la branche par défaut. L'activation de
+# Pages demande une permission que le token d'automatisation ne possède pas :
+# si Pages n'est pas encore activé, le déploiement échoue en avertissement
+# (sans faire échouer le workflow) et la publication par branche reste
+# disponible dès que Pages est activé dans les paramètres du dépôt.
 
 name: GitHub Pages — archive Memora
 
@@ -38,8 +39,6 @@ jobs:
   build:
     name: Construire et vérifier le site statique
     runs-on: ubuntu-latest
-    outputs:
-      pages: ${{ steps.pages_ready.outputs.ready }}
     steps:
       - name: Récupérer le dépôt
         uses: actions/checkout@v4
@@ -60,18 +59,11 @@ jobs:
           ! grep -F -q '{{' docs/index.html
           ! grep -F -q '{{' docs/404.html
 
-      # L'activation de Pages peut être refusée (token en lecture seule,
-      # site pas encore créé). On ne fait jamais échouer la construction pour
-      # cela : « Deploy from a branch » reste disponible dans tous les cas.
-      - name: Configurer GitHub Pages (si possible)
-        id: pages
+      # Échoue si Pages n'est pas encore activé : on tolère, le déploiement
+      # ci-dessous dira lui-même ce qu'il en est.
+      - name: Configurer GitHub Pages (si activé)
         continue-on-error: true
         uses: actions/configure-pages@v5
-
-      - name: Signaler que Pages est prêt
-        id: pages_ready
-        if: steps.pages.outcome == 'success'
-        run: echo "ready=true" >> "$GITHUB_OUTPUT"
 
       - name: Déposer l'artefact
         uses: actions/upload-pages-artifact@v4
@@ -81,8 +73,8 @@ jobs:
   deploy:
     name: Publier via l'API GitHub Pages
     # L'environnement github-pages est protégé : seuls les déploiements depuis
-    # la branche par défaut sont acceptés. On n'essaie que si Pages est actif.
-    if: github.ref == 'refs/heads/main' && needs.build.outputs.pages == 'true'
+    # la branche par défaut sont acceptés.
+    if: github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     environment:
@@ -91,4 +83,10 @@ jobs:
     steps:
       - name: Déployer
         id: deployment
+        continue-on-error: true
         uses: actions/deploy-pages@v4
+
+      - name: Avertissement si Pages n'est pas activé
+        if: steps.deployment.outcome == 'failure'
+        run: |
+          echo "::warning::Déploiement API impossible. Activez GitHub Pages dans Settings > Pages : « Deploy from a branch > main > /docs » (le dossier docs/ est déjà publié) ou « GitHub Actions », puis relancez ce workflow."

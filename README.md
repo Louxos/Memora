@@ -144,17 +144,19 @@ python3 -m http.server 8000 --directory docs  # aperçu local
 Aucune dépendance externe ni ressource distante : le site est entièrement
 statique, et **`docs/` est déjà publié tel quel dans le dépôt**.
 
-Pour le mettre en ligne (une seule fois) : *Settings → Pages → Build and
-deployment* → **Deploy from a branch → `main` → `/docs`**. C'est le mode le
-plus direct, sans aucune action CI.
+⚠️ **Une seule manipulation reste à faire** : l'activation de GitHub Pages
+demande une permission que le token d'automatisation du dépôt ne possède pas
+(l'API renvoie « Resource not accessible by integration »). Dans
+*Settings → Pages → Build and deployment*, choisir
+**Deploy from a branch → `main` → `/docs`** puis *Save*. Le site est alors
+en ligne à <https://louxos.github.io/Memora/>, sans outil ni compilation.
 
 Le nouveau relais de publication,
 [`.github/workflows/pages.yml`](.github/workflows/pages.yml), reconstruit et
-vérifie `docs/` à chaque modification, puis tente un déploiement via l'API
-Pages depuis `main` si *Settings → Pages → Source : **GitHub Actions*** est
-choisi. Si l'activation automatique de Pages est refusée par les permissions
-du dépôt, l'étape est ignorée sans faire échouer le workflow : la publication
-par branche continue de fonctionner.
+vérifie `docs/` à chaque modification et tente ensuite un déploiement via
+l'API Pages depuis `main` (utile si *Source : **GitHub Actions*** est choisi).
+Tant que Pages n'est pas activé, cette tentative émet un avertissement au lieu
+de faire échouer le workflow ; une fois activé, relancer le workflow suffit.
 
 ## 📂 Structure du dépôt
 
