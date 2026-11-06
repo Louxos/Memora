@@ -142,12 +142,19 @@ python3 -m http.server 8000 --directory docs  # aperçu local
 ```
 
 Aucune dépendance externe ni ressource distante : le site est entièrement
-statique. Le workflow
-[`.github/workflows/pages.yml`](.github/workflows/pages.yml) reconstruit
-`docs/` et le publie sur GitHub Pages à chaque modification (déploiement
-depuis la branche `main`). Si Pages n'est pas encore activé : *Settings →
-Pages → Build and deployment → Source : GitHub Actions*. Autre possibilité,
-sans Actions : *Source : Deploy from a branch → `main` → `/docs`*.
+statique, et **`docs/` est déjà publié tel quel dans le dépôt**.
+
+Pour le mettre en ligne (une seule fois) : *Settings → Pages → Build and
+deployment* → **Deploy from a branch → `main` → `/docs`**. C'est le mode le
+plus direct, sans aucune action CI.
+
+Le nouveau relais de publication,
+[`.github/workflows/pages.yml`](.github/workflows/pages.yml), reconstruit et
+vérifie `docs/` à chaque modification, puis tente un déploiement via l'API
+Pages depuis `main` si *Settings → Pages → Source : **GitHub Actions*** est
+choisi. Si l'activation automatique de Pages est refusée par les permissions
+du dépôt, l'étape est ignorée sans faire échouer le workflow : la publication
+par branche continue de fonctionner.
 
 ## 📂 Structure du dépôt
 

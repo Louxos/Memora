@@ -40,7 +40,7 @@ logs et exports exclus par `.gitignore`).
 |---|---|
 | **Page d'archive** | Les trois fichiers fournis (`index.html`, `404.html`, `site.css`) repris tels quels dans `site/`, adaptés à Memora : textes, charte indigo/violet, faits, raisons, liens, et suppression des éléments propres à une application web (routes `#`, liens d'appairage, relais de transfert) qui n'existaient pas dans ce projet. |
 | **Site statique prêt à publier** | `scripts/build_site.py` résout les marqueurs `{{…}}`, inline le CSS, intègre le logo `favicon.svg` et écrit `docs/` (avec `.nojekyll`). Aucune ressource distante, aucune dépendance. |
-| **Nouveau relais de publication** | `.github/workflows/pages.yml` reconstruit `docs/` et déploie sur GitHub Pages depuis `main` (`configure-pages` → `upload-pages-artifact` → `deploy-pages`). Le déploiement est limité à la branche par défaut à cause des règles de protection de l'environnement `github-pages`. |
+| **Nouveau relais de publication** | `.github/workflows/pages.yml` reconstruit et vérifie `docs/` à chaque modification, puis tente un déploiement Pages depuis `main` (`configure-pages` → `upload-pages-artifact` → `deploy-pages`). L'activation automatique de Pages peut être refusée par les permissions du dépôt : elle est alors ignorée sans faire échouer le workflow, et la publication classique par branche (`main` → `/docs`) reste disponible. Le déploiement est de toute façon limité à la branche par défaut à cause des règles de protection de l'environnement `github-pages`. |
 | **Nouvelle release finale** | `v1.0.0` — « Memora 1.0.0 — version d'archive », dernière version publiée. Elle fige le code tel qu'il a été laissé et sert de point d'entrée « dernière version » depuis la page. |
 | **Documentation adaptée** | `README.md` réécrit au passé avec l'état archivé ; `docs/GUIDE.md` (guide de la dernière version), `docs/TECHNIQUE.md` (architecture, sécurité, limites), `docs/ARCHIVAGE.md` (ce document). |
 | **Tous les fichiers d'entrée** | `main.py`, `memora/__init__.py`, `install.bat`, `run.bat`, `requirements.txt`, `.env.example` et `prompt` portent désormais une mention d'archive. Le comportement du code n'a **pas** été modifié. |
@@ -62,10 +62,13 @@ logs et exports exclus par `.gitignore`).
 
 1. **Fusionner** la pull request de la branche `arena/7081a176-memora` dans
    `main` : le workflow se déclenche alors et publie la page.
-2. **Activer GitHub Pages** si ce n'est pas déjà fait :
-   *Settings → Pages → Build and deployment → Source : **GitHub Actions***.
-   Le workflow `configure-pages` tente l'activation automatiquement.
-   Variante sans Actions : *Deploy from a branch → `main` → `/docs`*.
+2. **Activer GitHub Pages** si ce n'est pas déjà fait. Deux possibilités :
+   - **Recommandé, une seule manipulation** :
+     *Settings → Pages → Build and deployment → **Deploy from a branch →
+     `main` → `/docs`***. `docs/` est déjà versionné, aucun outil requis.
+   - **Avec le workflow** : *Source : **GitHub Actions***. Le workflow tente
+     l'activation via `configure-pages` ; si le token du dépôt ne le permet
+     pas, basculer sur la première option.
 3. **Vérifier** <https://louxos.github.io/Memora/> et sa page 404
    (par exemple `/Memora/inexistant`).
 4. **Optionnel : verrou officiel** — *Settings → General → Archive this

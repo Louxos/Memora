@@ -147,5 +147,7 @@ les six captures d'écran de `docs/captures/`.
 
 Le site statique est généré par `scripts/build_site.py` depuis les modèles
 `site/` (trois fichiers fournis + `favicon.svg`), résolus dans `docs/` avec le
-CSS inline. Le workflow `.github/workflows/pages.yml` construit et déploie sur
-GitHub Pages. Détails dans [ARCHIVAGE.md](ARCHIVAGE.md).
+CSS inline. `docs/` est versionné : GitHub Pages peut le servir directement
+depuis `main`. Le workflow `.github/workflows/pages.yml` reconstruit et vérifie
+le site, et tente un déploiement via l'API Pages si le mode « GitHub Actions »
+est activé. Détails dans [ARCHIVAGE.md](ARCHIVAGE.md).
