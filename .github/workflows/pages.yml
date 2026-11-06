@@ -39,7 +39,7 @@ jobs:
     name: Construire et vérifier le site statique
     runs-on: ubuntu-latest
     outputs:
-      pages: ${{ steps.pages.outcome }}
+      pages: ${{ steps.pages_ready.outputs.ready }}
     steps:
       - name: Récupérer le dépôt
         uses: actions/checkout@v4
@@ -68,6 +68,11 @@ jobs:
         continue-on-error: true
         uses: actions/configure-pages@v5
 
+      - name: Signaler que Pages est prêt
+        id: pages_ready
+        if: steps.pages.outcome == 'success'
+        run: echo "ready=true" >> "$GITHUB_OUTPUT"
+
       - name: Déposer l'artefact
         uses: actions/upload-pages-artifact@v4
         with:
@@ -77,7 +82,7 @@ jobs:
     name: Publier via l'API GitHub Pages
     # L'environnement github-pages est protégé : seuls les déploiements depuis
     # la branche par défaut sont acceptés. On n'essaie que si Pages est actif.
-    if: github.ref == 'refs/heads/main' && needs.build.outputs.pages == 'success'
+    if: github.ref == 'refs/heads/main' && needs.build.outputs.pages == 'true'
     needs: build
     runs-on: ubuntu-latest
     environment:
