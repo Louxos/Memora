@@ -40,7 +40,7 @@ logs et exports exclus par `.gitignore`).
 |---|---|
 | **Page d'archive** | Les trois fichiers fournis (`index.html`, `404.html`, `site.css`) repris tels quels dans `site/`, adaptés à Memora : textes, charte indigo/violet, faits, raisons, liens, et suppression des éléments propres à une application web (routes `#`, liens d'appairage, relais de transfert) qui n'existaient pas dans ce projet. |
 | **Site statique prêt à publier** | `scripts/build_site.py` résout les marqueurs `{{…}}`, inline le CSS, intègre le logo `favicon.svg` et écrit `docs/` (avec `.nojekyll`). Aucune ressource distante, aucune dépendance. |
-| **Nouveau relais de publication** | `.github/workflows/pages.yml` reconstruit et vérifie `docs/` à chaque modification, puis tente un déploiement Pages depuis `main` (`configure-pages` → `upload-pages-artifact` → `deploy-pages`). L'activation automatique de Pages peut être refusée par les permissions du dépôt : elle est alors ignorée sans faire échouer le workflow, et la publication classique par branche (`main` → `/docs`) reste disponible. Le déploiement est de toute façon limité à la branche par défaut à cause des règles de protection de l'environnement `github-pages`. |
+| **Nouveau relais de publication** | `.github/workflows/pages.yml` reconstruit et vérifie `docs/` à chaque modification, détecte si Pages est activé, et déploie l'artefact depuis `main` le cas échéant (`configure-pages` → `upload-pages-artifact` → `deploy-pages`). Si Pages n'est pas activé, il avertit sans échouer : la publication classique par branche (`main` → `/docs`) reste disponible. Le déploiement est limité à la branche par défaut à cause des règles de protection de l'environnement `github-pages`. |
 | **Nouvelle release finale** | `v1.0.0` — « Memora 1.0.0 — version d'archive », dernière version publiée. Elle fige le code tel qu'il a été laissé et sert de point d'entrée « dernière version » depuis la page. |
 | **Documentation adaptée** | `README.md` réécrit au passé avec l'état archivé ; `docs/GUIDE.md` (guide de la dernière version), `docs/TECHNIQUE.md` (architecture, sécurité, limites), `docs/ARCHIVAGE.md` (ce document). |
 | **Tous les fichiers d'entrée** | `main.py`, `memora/__init__.py`, `install.bat`, `run.bat`, `requirements.txt`, `.env.example` et `prompt` portent désormais une mention d'archive. Le comportement du code n'a **pas** été modifié. |
@@ -49,6 +49,11 @@ logs et exports exclus par `.gitignore`).
 
 - Aucune correction, aucune migration de dépendances, aucune suppression de
   fichier de l'application.
+- **GitHub Pages n'a pas pu être activé depuis l'agent** : l'API renvoie
+  `403 Resource not accessible by integration` au token fourni, et `403` au
+  `GITHUB_TOKEN` du workflow (permission `pages:write` absente). Le site
+  statique est donc prêt et publié dans `docs/`, mais l'activation reste un
+  réglage manuel unique (§ 4).
 - **Le dépôt GitHub n'a pas été passé en lecture seule technique** via
   l'option « Archive this repository ». Le faire trop tôt aurait empêché la
   publication de la release, le workflow Pages et la fusion de la branche de

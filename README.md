@@ -153,10 +153,10 @@ en ligne à <https://louxos.github.io/Memora/>, sans outil ni compilation.
 
 Le nouveau relais de publication,
 [`.github/workflows/pages.yml`](.github/workflows/pages.yml), reconstruit et
-vérifie `docs/` à chaque modification et tente ensuite un déploiement via
-l'API Pages depuis `main` (utile si *Source : **GitHub Actions*** est choisi).
-Tant que Pages n'est pas activé, cette tentative émet un avertissement au lieu
-de faire échouer le workflow ; une fois activé, relancer le workflow suffit.
+vérifie `docs/` à chaque modification. Il détecte l'état de Pages : site activé
+→ déploiement de l'artefact via l'API depuis `main` (source *GitHub Actions*) ;
+site non activé → simple avertissement, workflow vert. Après activation en mode
+*GitHub Actions*, relancer le workflow suffit à publier.
 
 ## 📂 Structure du dépôt
 
