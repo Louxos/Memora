@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Memora — projet archivé le {{ARCHIVED_ON}}</title>
+    <meta
+      name="description"
+      content="Memora, logiciel personnel de révision qui transformait un cours en fiche de révision grâce à l'IA, est archivé. Le développement est définitivement arrêté ; le dépôt reste public, en lecture seule, comme archive de ce qui a été construit."
+    />
+    <meta name="theme-color" content="#101219" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Memora — projet archivé" />
+    <meta
+      property="og:description"
+      content="Le développement de Memora est arrêté. Le dépôt reste public, en lecture seule, comme archive."
+    />
+    <meta property="og:url" content="{{SITE_URL}}" />
+    <meta property="og:image" content="{{SITE_URL}}favicon.svg" />
+    <meta name="twitter:card" content="summary" />
+    <style>
+{{INLINE_CSS}}
+    </style>
+  </head>
+  <body class="archive">
+    <a class="skip-link" href="#archive">Aller au contenu</a>
+
+    <header class="topbar">
+      <div class="wrap">
+        <a class="brand" href="#archive">
+          {{MARK_SVG}}
+          <span>Memora</span>
+        </a>
+        <nav class="topnav" aria-label="Liens du projet">
+          <a href="#etat">État du projet</a>
+          <a class="hide-sm" href="#raisons">Pourquoi l'arrêt</a>
+          <a class="hide-sm" href="#acces">Ce qui reste</a>
+          <a class="stars" href="{{REPO_URL}}">
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+              <path
+                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A7.995 7.995 0 0 0 16 8c0-4.42-3.58-8-8-8Z"
+              />
+            </svg>
+            Code source
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="archive">
+      <!-- ------------------------------------------------------------------ *
+           Le titre, la date, et l'état. Une page d'archive doit se lire en
+           trois secondes : c'est fini, voici quand, voici où est le code.
+           ------------------------------------------------------------------ -->
+      <section class="archive-hero">
+        <div class="wrap">
+          <p class="pill">
+            <span class="dot" aria-hidden="true"></span>
+            Projet archivé · {{ARCHIVED_ON}}
+          </p>
+          <h1>Ce projet est désormais archivé.</h1>
+          <p class="lede">
+            Memora transformait un cours — PDF, Word, texte ou photo — en une fiche de révision
+            claire, rangée dans une bibliothèque locale pour préparer le brevet. Le développement
+            s'arrête ici, définitivement. Le dépôt reste public, en lecture seule, comme archive de
+            ce qui a été construit.
+          </p>
+          <p class="status-line">
+            <span class="status-dot" aria-hidden="true"></span>
+            Développement arrêté — aucune nouvelle fonctionnalité, aucun correctif.
+          </p>
+        </div>
+      </section>
+
+      <section id="etat" class="wrap facts-wrap" aria-labelledby="titre-etat">
+        <h2 class="section-label" id="titre-etat">État du projet</h2>
+        <dl class="facts">
+          <div class="fact">
+            <dt>Archivé le</dt>
+            <dd>{{ARCHIVED_ON}}</dd>
+          </div>
+          <div class="fact">
+            <dt>Dernière version publiée</dt>
+            <dd>{{LAST_VERSION}} — {{LAST_VERSION_ON}}</dd>
+          </div>
+          <div class="fact">
+            <dt>Dépôt</dt>
+            <dd>Public, lecture seule</dd>
+          </div>
+          <div class="fact">
+            <dt>Historique</dt>
+            <dd>Conservé, consultable</dd>
+          </div>
+        </dl>
+        <p class="note">
+          L'archivage est une décision, pas un incident : le code, les versions publiées et
+          l'historique des modifications restent en ligne et inchangés. Rien n'a été supprimé.
+        </p>
+      </section>
+
+      <!-- ------------------------------------------------------------------ *
+           L'objectif initial, dit simplement.
+           ------------------------------------------------------------------ -->
+      <section id="objectif">
+        <div class="wrap">
+          <h2 class="section">Ce que Memora devait être</h2>
+          <p class="sub">
+            Un logiciel de bureau entièrement local, sans compte, qui transforme un cours en fiche
+            de révision structurée, agréable à lire et facile à retrouver.
+          </p>
+
+          <blockquote class="quote">
+            Importer un cours — PDF, Word, texte ou photo — et en ressortir une fiche de révision
+            complète, rangée dans une bibliothèque locale, pour réviser le brevet sans repartir
+            d'une page blanche.
+          </blockquote>
+
+          <div class="grid">
+            <div class="card">
+              <h3>Du cours à la fiche</h3>
+              <p>
+                Import au clic ou par glisser-déposer, texte des PDF, structure des DOCX conservée,
+                lecture des fichiers texte et OCR des photos via Mistral, avec repli Tesseract
+                local. Un seul pipeline, de l'aperçu à la fiche.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Générée par IA, relue par l'élève</h3>
+              <p>
+                Sections adaptatives produites par Mistral, quatre modes de génération, questions
+                d'auto-évaluation à réponses masquées, et modification manuelle de chaque section.
+                Rien de vide, rien d'inventé : les points douteux étaient signalés.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Tout reste sur l'ordinateur</h3>
+              <p>
+                Aucun compte, bibliothèque SQLite locale, clé API rangée dans le trousseau système,
+                thèmes clair et sombre, exports PDF et Markdown. Les données n'ont jamais quitté
+                l'ordinateur, hors appels à l'API Mistral.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ------------------------------------------------------------------ *
+           Pourquoi, sans détour et sans reproche.
+           ------------------------------------------------------------------ -->
+      <section id="raisons">
+        <div class="wrap">
+          <h2 class="section">Pourquoi le développement s'arrête</h2>
+          <p class="sub">
+            Trois raisons, dans l'ordre de ce qui a pesé.
+          </p>
+          <div class="grid">
+            <div class="card">
+              <h3>Une maintenance disproportionnée</h3>
+              <p>
+                Un seul développeur pour une application de bureau complète : interface Qt,
+                extraction PDF et DOCX, OCR, base SQLite, exports, et 41 tests à faire tourner sur
+                Windows. Chaque évolution demandait de tout revérifier pour rester honnête.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Des dépendances qui bougent</h3>
+              <p>
+                Modèles et tarifs de l'API Mistral, service OCR, PySide6, PyMuPDF : un logiciel qui
+                dépend de services et de bibliothèques externes exige une veille permanente. Figer
+                une version sans la suivre finirait par promettre ce qu'elle ne tient plus.
+              </p>
+            </div>
+            <div class="card">
+              <h3>L'objectif était atteint</h3>
+              <p>
+                Memora a été construit pour un besoin précis : préparer un brevet avec de bonnes
+                fiches. Ce besoin est couvert, ici par le logiciel livré, ailleurs par des outils
+                maintenus par des équipes. Continuer n'apportait plus assez pour justifier une base
+                de code à porter seul.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ------------------------------------------------------------------ *
+           Où trouver le code, l'histoire, et l'application telle quelle.
+           ------------------------------------------------------------------ -->
+      <section id="acces">
+        <div class="wrap">
+          <h2 class="section">Ce qui reste accessible</h2>
+          <p class="sub">
+            Tout est public et en lecture seule. L'archivage ne ferme pas le dépôt : il fige son
+            état. Ce site est servi par GitHub Pages, sans hébergeur tiers.
+          </p>
+
+          <ul class="archive-links">
+            <li>
+              <a href="{{REPO_URL}}">
+                <span class="label">Le code source</span>
+                <span class="detail">L'intégralité du dépôt, tel qu'il a été laissé</span>
+                <span class="arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{REPO_URL}}/commits/main">
+                <span class="label">L'historique des modifications</span>
+                <span class="detail">Chaque commit, depuis le premier</span>
+                <span class="arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{REPO_URL}}/releases">
+                <span class="label">Les versions publiées</span>
+                <span class="detail">{{LAST_VERSION}} est la dernière version publiée, et le restera</span>
+                <span class="arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{REPO_URL}}#readme">
+                <span class="label">La documentation du projet</span>
+                <span class="detail">Installation, configuration, structure et tests — écrits et vérifiés</span>
+                <span class="arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{REPO_URL}}/blob/main/prompt">
+                <span class="label">Le cahier des charges initial</span>
+                <span class="detail">Le prompt de développement complet, depuis la première idée</span>
+                <span class="arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{RELEASE_URL}}">
+                <span class="label">La dernière version, telle qu'elle a été laissée</span>
+                <span class="detail">
+                  {{LAST_VERSION}} — application Windows à lancer avec install.bat puis run.bat,
+                  sans maintenance ni garantie de fonctionnement des services externes
+                </span>
+                <span class="arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+          </ul>
+
+          <p class="note">
+            <strong>Licence :</strong> le dépôt n'a jamais reçu de licence. Le code est donc
+            consultable, mais pas librement réutilisable, modifiable ni redistribuable par défaut.
+            L'archivage ne permet plus d'en ajouter une : lisez-le comme une référence, pas comme
+            une bibliothèque à réemployer.
+          </p>
+        </div>
+      </section>
+
+      <section id="suite" class="closing">
+        <div class="wrap">
+          <h2 class="section">Et maintenant ?</h2>
+          <p class="sub">
+            Rien. Aucune correction, aucune réponse de support, aucune reprise prévue. Les issues et
+            les pull requests sont figées par l'archivage du dépôt. Si vous cherchez un outil de
+            révision maintenu, choisissez-en un qui l'est.
+          </p>
+          <p class="signature">
+            Memora · 2026 — du premier commit à l'archive, sans rien effacer.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <span class="brand">{{MARK_SVG}}<span>Memora</span></span>
+        <span class="closed">Archivé le {{ARCHIVED_ON}}</span>
+        <span class="spacer"></span>
+        <a href="{{REPO_URL}}">Code source</a>
+        <a href="{{REPO_URL}}/releases">Versions</a>
+        <a href="{{REPO_URL}}#readme">Documentation</a>
+      </div>
+    </footer>
+  </body>
+</html>

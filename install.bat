@@ -1,10 +1,13 @@
 @echo off
 REM ============================================================
+REM  ARCHIVE : projet arrete le 6 novembre 2026 - version finale 1.0.0.
+REM  Ce script est conserve tel quel, sans maintenance ni garantie.
 REM  Memora — installation des dépendances (à faire une seule fois)
 REM  Prend le Python le plus recent compatible (3.14 -> 3.13 -> 3.12)
 REM  et verifie qu'il s'agit d'une version 64 bits.
 REM ============================================================
 cd /d "%~dp0"
+echo [Memora] Projet archive le 6 novembre 2026 - version 1.0.0, sans maintenance.
 
 REM -- choix du Python le plus recent disponible
 set "CHEMIN_PY="

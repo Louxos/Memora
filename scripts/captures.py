@@ -1,5 +1,7 @@
 """Génère des captures d'écran de Memora (utile pour la documentation).
 
+🗄️ Outil historique de la version d'archive 1.0.0 (6 novembre 2026).
+
 Usage :  python scripts/captures.py [dossier_sortie]
 Fonctionne sans écran (plateforme Qt « minimal »).
 """

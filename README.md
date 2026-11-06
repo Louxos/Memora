@@ -1,142 +1,219 @@
-# 🧠 Memora
+# 🧠 Memora — projet archivé
 
-**Memora** est un logiciel personnel de révision, pensé pour un élève de 3e qui prépare
-le brevet. Tu lui donnes un cours (PDF, Word, texte, photo) — il te rend une **fiche de
-révision claire, complète et agréable à lire**, rangée dans une bibliothèque locale.
-
-> Importer un cours → comprendre son contenu → produire une excellente fiche de révision
-> → la sauvegarder et la retrouver facilement.
+> ## 🗄️ Archivé le 6 novembre 2026
+>
+> **Le développement de Memora est définitivement arrêté.** Aucune nouvelle
+> fonctionnalité, aucun correctif, aucune réponse de support, aucune reprise
+> prévue. Le dépôt reste public, en lecture seule, comme archive de ce qui a
+> été construit. Rien n'a été supprimé.
+>
+> **Page d'archive :** <https://louxos.github.io/Memora/> ·
+> **Dernière version :** [1.0.0](https://github.com/Louxos/Memora/releases/tag/v1.0.0) ·
+> **Dossier d'archivage :** [docs/ARCHIVAGE.md](docs/ARCHIVAGE.md)
 
 | Accueil | Fiche générée (thème sombre) |
 |---|---|
 | ![Accueil](docs/captures/01-accueil.png) | ![Fiche](docs/captures/06-fiche-sombre.png) |
 
+*Captures de la dernière version, conservées telles qu'elles ont été livrées.*
+
 ---
 
-## ✨ Fonctionnalités
+## État des lieux
 
-- **Import de cours** : PDF, DOCX, TXT, MD, JPG, JPEG, PNG, WEBP — au clic ou en
-  glisser-déposer, avec aperçu du document.
-- **Extraction intelligente** : texte intégré des PDF (avec détection automatique des
-  PDF scannés), structure des DOCX conservée (titres, listes, tableaux), lecture directe
-  des TXT, **OCR** des images et scans via **Mistral OCR** (excellent en français),
-  avec repli possible sur Tesseract local.
-- **Fiches générées par IA (Mistral)** : objectif, l'essentiel, notions, définitions,
-  formules, méthodes, dates/personnages/événements, exemples, pièges, « Si tu ne dois
-  retenir que ça » et questions d'auto-évaluation **à réponses masquées**. Les sections
-  sont adaptatives : rien de vide, rien d'inventé — les points douteux sont signalés.
+| | |
+|---|---|
+| **Archivé le** | 6 novembre 2026 |
+| **Dernière version** | **1.0.0** — version finale, publiée le 6 novembre 2026 |
+| **Dépôt** | Public, conservé avec tout son historique |
+| **GitHub Page** | Site statique d'archive, servi depuis `docs/` |
+| **Développement** | Arrêté — code, versions et commits figés |
+
+Memora **était** un logiciel personnel de révision, pensé pour un élève de 3e
+qui préparait le brevet. On lui donnait un cours (PDF, Word, texte, photo), il
+en tirait une **fiche de révision claire et complète**, rangée dans une
+bibliothèque locale.
+
+> Importer un cours → en comprendre le contenu → produire une fiche → la
+> sauvegarder et la retrouver facilement.
+
+Le code fonctionnel de la version 1.0.0 est toujours là, ainsi que les 41
+tests, les captures d'écran et le cahier des charges initial
+([`prompt`](prompt)). Il est livré **en l'état**, sans garantie : les services
+externes (API Mistral, modèles, OCR) et les bibliothèques (PySide6, PyMuPDF)
+ont pu évoluer depuis.
+
+## Ce qui reste accessible
+
+- [La page d'archive (GitHub Pages)](https://louxos.github.io/Memora/) — état du
+  projet, raisons de l'arrêt, liens vers le code.
+- [La version 1.0.0](https://github.com/Louxos/Memora/releases/tag/v1.0.0) —
+  dernière version publiée, et le restera.
+- [Le code source](https://github.com/Louxos/Memora) et
+  [l'historique des commits](https://github.com/Louxos/Memora/commits/main).
+- [Guide de la dernière version](docs/GUIDE.md),
+  [documentation technique](docs/TECHNIQUE.md),
+  [dossier d'archivage](docs/ARCHIVAGE.md) et
+  [captures d'écran](docs/captures).
+- [Le cahier des charges initial](prompt) — le prompt de développement complet.
+
+## Ce qui s'arrête
+
+Aucune évolution du logiciel, aucune mise à jour de dépendances, aucun
+correctif, aucun support. Les issues et les pull requests ne sont plus
+traitées. Si vous cherchez un outil de révision maintenu, choisissez-en un qui
+l'est. Pour figer officiellement le dépôt côté GitHub (passage en lecture seule
+technique), voir [docs/ARCHIVAGE.md](docs/ARCHIVAGE.md) : c'est une action
+volontairement laissée à la main, afin de ne pas empêcher la publication de la
+page et de la dernière version.
+
+## ✨ Ce que faisait Memora (version 1.0.0)
+
+- **Import de cours** : PDF, DOCX, TXT, MD, JPG, JPEG, PNG, WEBP — au clic ou
+  en glisser-déposer, avec aperçu du document.
+- **Extraction intelligente** : texte intégré des PDF (détection des PDF
+  scannés), structure des DOCX conservée, lecture des TXT, **OCR** des images
+  via Mistral OCR avec repli possible sur Tesseract local.
+- **Fiches générées par IA (Mistral)** : objectif, l'essentiel, notions,
+  définitions, formules, méthodes, dates/personnages, exemples, pièges,
+  « Si tu ne dois retenir que ça » et questions à réponses masquées. Sections
+  adaptatives : rien de vide, rien d'inventé, les points douteux signalés.
 - **4 modes de génération** : ⚡ Rapide, 📚 Complète, 🎯 Brevet, 🧠 Active.
-- **Bibliothèque locale** : recherche plein texte, filtres (matière, chapitre, statut,
-  favoris), tri (récent, ancien, alphabétique), organisation par matière → chapitre.
-- **Statuts de révision** : 🔴 À apprendre / 🟡 À revoir / 🟢 Maîtrisée.
-- **Favoris**, **modification manuelle complète** (métadonnées + chaque section, ajout /
-  retrait de sections), **régénération** depuis le document source.
-- **Exports** : PDF mis en page, Markdown, copie presse-papiers, sauvegarde/import de
-  toute la bibliothèque (JSON).
-- **Thèmes clair / sombre / système**, mode **démonstration** sans clé API, logs locaux.
+- **Bibliothèque locale** : recherche plein texte, filtres, tri, organisation
+  par matière → chapitre, statuts de révision, favoris, édition manuelle
+  complète et régénération depuis le document source.
+- **Exports** : PDF mis en page, Markdown, presse-papiers, sauvegarde/import
+  JSON de toute la bibliothèque.
+- **Thèmes clair / sombre / système**, mode démonstration sans clé API, logs
+  locaux.
 
-## 🛠️ Technologies
+Tout fonctionnait **100 % en local** : aucun serveur distant, aucune donnée
+envoyée ailleurs qu'à l'API Mistral lors des analyses.
+
+## 🛠️ Technologies (figées)
 
 | Rôle | Choix |
 |---|---|
 | Langage | Python 3.10+ |
-| Interface | PySide6 (Qt 6) — desktop moderne, thèmes QSS |
-| Base de données | SQLite (créée automatiquement, zéro configuration) |
-| IA | API **Mistral** (`mistral-small-latest` par défaut) : chat + OCR |
+| Interface | PySide6 (Qt 6) — thèmes QSS |
+| Base de données | SQLite (créée automatiquement) |
+| IA | API Mistral (`mistral-small-latest` par défaut) : chat + OCR |
 | Extraction | PyMuPDF (PDF), python-docx (Word) |
 | Sécurité | `keyring` (trousseau système) pour la clé API |
+| Publication de l'archive | GitHub Pages, site statique sans dépendance |
 
-Tout fonctionne **100 % en local** : aucun serveur distant, aucune donnée envoyée ailleurs
-qu'à l'API Mistral lors des analyses.
+## 📦 Utiliser la dernière version (à titre historique)
 
-## 📦 Installation (Windows)
+La procédure ci-dessous est celle de la version 1.0.0, conservée telle quelle.
+**Aucune assistance n'est fournie si elle ne fonctionne plus.**
 
-1. Installe **Python 3.10 ou plus récent** : https://www.python.org/downloads/
-   (coche bien « *Add Python to PATH* »).
-2. Télécharge/copie ce dossier, puis **double-clique sur `install.bat`** (une seule fois).
-3. Double-clique sur **`run.bat`** pour lancer Memora. C'est tout.
+1. Installer **Python 3.10 ou plus récent** (Windows, 64 bits, avec l'option
+   *Add Python to PATH*).
+2. Double-cliquer sur **`install.bat`** une seule fois.
+3. Renseigner une clé **Mistral** dans *Paramètres → Intelligence artificielle*,
+   ou créer un fichier `.env` d'après [`.env.example`](.env.example)
+   (`MISTRAL_API_KEY=…`), ou définir la variable d'environnement du même nom.
+4. Double-cliquer sur **`run.bat`** pour lancer Memora.
 
-> Sur Linux/macOS : `python3 -m venv .venv && .venv/bin/pip install -r requirements.txt`,
-> puis lance avec `.venv/bin/python main.py`.
+Options de `main.py` : `--demo` (fiches de démonstration sans clé API),
+`--check-api` (test de la clé), `--version` (affiche `1.0.0`).
 
-## 🔑 Configuration de la clé API Mistral
+Sur Linux/macOS : `python3 -m venv .venv && .venv/bin/pip install -r
+requirements.txt`, puis `.venv/bin/python main.py`.
 
-L'analyse IA et l'OCR nécessitent une clé **Mistral** (gratuite et suffisant généreuse
-pour réviser) :
+Le guide complet de la dernière version est dans
+[docs/GUIDE.md](docs/GUIDE.md), l'architecture dans
+[docs/TECHNIQUE.md](docs/TECHNIQUE.md).
 
-1. Crée un compte sur <https://console.mistral.ai/> puis génère une **clé API**.
-2. Dans Memora : **Paramètres → Intelligence artificielle → Clé API** → colle-la →
-   « Enregistrer la clé », puis « **Tester la connexion** ».
+## 🌐 La GitHub Page d'archive
 
-Autres méthodes (facultatives) :
+Les **trois fichiers fournis** sont conservés dans [`site/`](site) :
+[`index.html`](site/index.html), [`404.html`](site/404.html) et
+[`site.css`](site/site.css), avec leurs marqueurs `{{…}}`, plus le logo
+[`favicon.svg`](site/favicon.svg). Ils sont adaptés au projet (contenu, charte
+indigo/violet de Memora, liens), mais leur structure est celle d'origine.
 
-- crée un fichier `.env` à côté de `main.py` contenant
-  `MISTRAL_API_KEY=ta-cle` (voir `.env.example`) ;
-- ou définis la variable d'environnement `MISTRAL_API_KEY`.
-
-La clé est stockée dans le **trousseau de ton système** (Gestionnaire d'identifiants
-Windows) — jamais dans le code, jamais affichée en clair, jamais envoyée sur GitHub.
-
-En ligne de commande : `python main.py --check-api` vérifie la clé immédiatement.
-
-## 🚀 Lancement
+[`scripts/build_site.py`](scripts/build_site.py) résout les marqueurs, injecte
+le CSS dans chaque page et écrit le site prêt à publier dans **`docs/`** :
 
 ```bash
-python main.py            # lance l'application
-python main.py --demo     # ajoute des fiches de démonstration (sans clé API)
-python main.py --check-api  # teste la connexion à Mistral
+python3 scripts/build_site.py                 # génère docs/
+python3 -m http.server 8000 --directory docs  # aperçu local
 ```
 
-Sous Windows, `run.bat` fait tout, tout seul.
+Aucune dépendance externe ni ressource distante : le site est entièrement
+statique, et **`docs/` est déjà publié tel quel dans le dépôt**.
 
-## 📂 Structure du projet
+Pour le mettre en ligne (une seule fois) : *Settings → Pages → Build and
+deployment* → **Deploy from a branch → `main` → `/docs`**. C'est le mode le
+plus direct, sans aucune action CI.
+
+Le nouveau relais de publication,
+[`.github/workflows/pages.yml`](.github/workflows/pages.yml), reconstruit et
+vérifie `docs/` à chaque modification, puis tente un déploiement via l'API
+Pages depuis `main` si *Settings → Pages → Source : **GitHub Actions*** est
+choisi. Si l'activation automatique de Pages est refusée par les permissions
+du dépôt, l'étape est ignorée sans faire échouer le workflow : la publication
+par branche continue de fonctionner.
+
+## 📂 Structure du dépôt
 
 ```
 Memora/
-├── main.py                  # point d'entrée (+ options --demo, --check-api)
+├── README.md                # ce fichier — état archivé
+├── prompt                   # cahier des charges initial (historique)
+├── main.py                  # point d'entrée de la version 1.0.0
 ├── run.bat / install.bat    # lancement et installation Windows
-├── memora/
-│   ├── config/              # réglages, chemins, stockage sécurisé de la clé
-│   ├── core/                # modèle Fiche, SQLite, pipeline de génération, démo
-│   ├── extraction/          # PDF, DOCX, TXT, images, OCR (Mistral + Tesseract)
-│   ├── ia/                  # client API Mistral, prompts, générateur de fiches
-│   ├── export/              # Markdown, HTML, PDF
-│   ├── ui/                  # thème, icônes, widgets, vues (accueil, bibliothèque…)
-│   └── utils/               # logs, erreurs, fichiers
-├── tests/                   # suite pytest (41 tests : extraction, OCR, IA, BDD, UI…)
-└── docs/captures/           # captures d'écran
+├── requirements.txt         # dépendances figées
+├── .env.example             # modèle de configuration (aucun secret)
+├── memora/                  # application PySide6 (config, core, extraction,
+│                            #   ia, export, ui, utils)
+├── tests/                   # suite pytest — 41 tests
+├── site/                    # modèles de la page d'archive (fichiers fournis)
+│   ├── index.html
+│   ├── 404.html
+│   ├── site.css
+│   └── favicon.svg
+├── scripts/
+│   ├── build_site.py        # génère le site statique
+│   └── captures.py          # outil historique de captures d'écran
+├── docs/                    # site publié + documentation d'archive
+│   ├── index.html · 404.html · site.css · favicon.svg · .nojekyll
+│   ├── ARCHIVAGE.md · GUIDE.md · TECHNIQUE.md
+│   └── captures/            # 6 captures de la dernière version
+└── .github/workflows/pages.yml
 ```
 
 ## 🔒 Sécurité & données personnelles
 
-- `.env`, la base SQLite, les logs et les exports sont **exclus de git** (`.gitignore`).
-- La clé API est masquée dans l'interface (`VlcQ…HPs`) et logguée nulle part.
-- Les documents originaux ne sont **pas dupliqués** : la fiche garde une référence
-  (chemin) vers le fichier source.
-- Les données vivent dans `%APPDATA%\Memora` (Windows) — tu peux les sauvegarder/restaurer
-  depuis **Paramètres → Données**.
+- `.env`, la base SQLite, les logs et les exports sont exclus de git
+  (`.gitignore`) : **aucune fiche, aucun cours, aucune clé n'a jamais été
+  publié** dans ce dépôt ni sur la page d'archive.
+- La clé API était stockée dans le trousseau du système, masquée dans
+  l'interface et jamais journalisée.
+- Les documents originaux n'étaient pas dupliqués : la fiche gardait une
+  référence (chemin) vers le fichier source.
+- Les données vivaient dans `%APPDATA%\Memora` (Windows) ; la sauvegarde se
+  faisait depuis *Paramètres → Données*.
 
-## ⚙️ Fonctionnement général
-
-1. **Nouvelle fiche** → dépose ton document.
-2. Memora **extrait** le contenu (OCR si nécessaire) en affichant la progression
-   étape par étape.
-3. L'**IA Mistral** analyse le cours et construit la fiche (JSON structuré, validé
-   puis mis en forme).
-4. La fiche est **enregistrée** dans la bibliothèque : lis-la, modifie-la, marque-la
-   favorite, change son statut, exporte-la.
-
-## 🧪 Tests
+## 🧪 Tests (historique)
 
 ```bash
 python -m pytest tests/ -q
 ```
 
-41 tests couvrent l'import PDF/DOCX/image, l'OCR, le client API (clé invalide, quota,
-réseau, JSON invalide), la génération complète, la base SQLite, les filtres/recherche,
-les exports et le démarrage de l'interface.
+41 tests couvraient l'import PDF/DOCX/image, l'OCR, le client API (clé
+invalide, quota, réseau, JSON invalide), la génération complète, la base
+SQLite, les filtres/recherche, les exports et le démarrage de l'interface.
+Ils nécessitent PySide6 et ne sont plus maintenus.
+
+## 📄 Licence
+
+Le dépôt n'a jamais reçu de licence. Le code est consultable, mais pas
+librement réutilisable, modifiable ni redistribuable par défaut. L'archivage ne
+permet plus d'en ajouter une : lisez-le comme une référence, pas comme une
+bibliothèque à réemployer.
 
 ---
 
-Memora a été conçu pour être utilisé immédiatement : installe, colle ta clé, importe ton
-premier cours — et révise. Bonne préparation du brevet ! 🎓
+**Memora · 2026 — du premier commit à l'archive, sans rien effacer.**
